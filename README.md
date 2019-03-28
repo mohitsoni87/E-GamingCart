@@ -2,10 +2,10 @@
 An API for Managing E-Products built using NodeJS - Express.
 
 # Installation:
-$ npm install -g cors \n
-$ npm install -g express
-$ npm install -g joi
-$ npm install -g nodemon
+$ npm install -g cors     <br />
+$ npm install -g express  <br />
+$ npm install -g joi      <br />
+$ npm install -g nodemon  <br />
 
 # Running:
 
