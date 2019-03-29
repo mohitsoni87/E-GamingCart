@@ -231,7 +231,7 @@ app.get('/cart', function(req, resp){
         resp.json("Please log in first.");  //if the user is not logged in.
     }
     else{
-        if(User.Username in Cart){
+        if(User.Username in Cart && Cart[User.Username].length > 0){
                 resp.json(Cart[User.Username] + '.Your Cart Value including Tax is ₹' + (CartValue[User.Username] + 0.18*CartValue[User.Username])+ ".");
         }
         else{
@@ -263,7 +263,9 @@ app.get('/orderCart', function(req, resp){
                 var discount = (20).toString();
             }
             if(discount){
-                    resp.json("Congratulations!! Your Cart is successfully ordered. And you have earned a discount of " + discount + "%, your total amount with Tax is ₹" + ogPrice + ". With discount your total bill is ₹" +  discountedprice);
+                Cart[User.Username] = [];
+                CartValue[User.Username] = 0;
+                resp.json("Congratulations!! Your Cart is successfully ordered. And you have earned a discount of " + discount + "%, your total amount with Tax is ₹" + ogPrice + ". With discount your total bill is ₹" +  discountedprice);
             }
             else{
                 resp.json("Congratulations!!  Your Cart is successfully ordered.");
@@ -275,6 +277,30 @@ app.get('/orderCart', function(req, resp){
             resp.json("Your cart is empty."); 
         }
     }
+});
+
+
+//Delete Cart Items
+app.delete('/delete', function(req, resp){
+    var i = 0;
+    var check = Cart[User.Username];
+    var flag = false;
+    for(i = 0; i < check.length; i++){
+        if(check[i] == req.query.productName){
+            //console.log(gameDetail[(req.query.productName)][0].Price);
+            CartValue[User.Username] -= gameDetail[(req.query.productName)][0].Price;
+            Cart[User.Username].splice(i, 1);
+            flag = true;
+            break;
+        }
+    }
+    if(!flag){
+        resp.json(req.query.productName + " is not in your cart yet.");
+    }
+    else{
+        resp.json("Successfully deleted from your cart.");
+    }
+
 });
 
 
