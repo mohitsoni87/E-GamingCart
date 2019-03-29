@@ -10,38 +10,16 @@
   },
   "host": "localhost:8080",
   "basePath": "/",
-  "tags": [
-    {
-      "name": "Game",
-      "description": "Everything about your Games",
-      "externalDocs": {
-        "description": "Find out more",
-        "url": "http://swagger.io"
-      }
-    },
-    {
-      "name": "store",
-      "description": "Access to Gamestore orders"
-    },
-    {
-      "name": "user",
-      "description": "Operations about user",
-      "externalDocs": {
-        "description": "Find out more about our store",
-        "url": "http://swagger.io"
-      }
-    }
-  ],
   "schemes": [
     "http"
   ],
   "paths": {
-    "/registeruser": {
-      "post": {
+    "/category": {
+      "get": {
         "tags": [
-          "RegisterUser"
+          "Category"
         ],
-        "summary": "Add a new user",
+        "summary": "Get Category",
         "description": "",
         "operationId": "addGame",
         "consumes": [
@@ -52,17 +30,9 @@
         ],
         "parameters": [
           {
-            "name": "Username",
+            "name": "CategoryName",
             "in": "query",
-            "description": "Username",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "Password",
-            "in": "query",
-            "description": "Password",
-            "required": true,
+            "description": "CategoryName",
             "type": "string"
           }
         ],
@@ -76,12 +46,12 @@
         }
       }
     },
-    "/login": {
+    "/addcategory": {
       "post": {
         "tags": [
-          "Login"
+          "Category"
         ],
-        "summary": "Login",
+        "summary": "Add Category",
         "description": "",
         "consumes": [
           "application/json"
@@ -91,18 +61,29 @@
         ],
         "parameters": [
           {
-            "name": "Username",
+            "name": "CategoryName",
             "in": "query",
-            "description": "Username",
+            "description": "CategoryName",
             "required": true,
             "type": "string"
           },
           {
-            "name": "Password",
+            "name": "ProductName",
             "in": "query",
-            "description": "Password",
-            "required": true,
+            "description": "Product Name",
             "type": "string"
+          },
+          {
+            "name": "Creator",
+            "in": "query",
+            "description": "Creator",
+            "type": "string"
+          },
+          {
+            "name": "Price",
+            "in": "query",
+            "description": "Creator",
+            "type": "integer"
           }
         ],
         "responses": {
@@ -115,41 +96,35 @@
         }
       }
     },
-    "/logout": {
-      "get": {
+    "/deleteCategory": {
+      "delete": {
         "tags": [
-          "Logout"
+          "Category"
         ],
-        "summary": "Logout",
+        "summary": "deleteCategory",
         "description": "Multiple status values can be provided with comma separated strings",
+        "consumes": [
+          "multipart/form-data"
+        ],
         "produces": [
           "application/json"
         ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Game"
-              }
+        "parameters": [
+          {
+            "name": "GameName",
+            "in": "query",
+            "description": "ID of Game to update",
+            "required": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Sports",
+                "Action",
+                "Adventure"
+              ]
             }
-          },
-          "400": {
-            "description": "Invalid status value"
           }
-        }
-      }
-    },
-    "/cart": {
-      "get": {
-        "tags": [
-          "Cart"
-        ],
-        "summary": "Cart Items",
-        "description": "Multiple status values can be provided with comma separated strings",
-        "produces": [
-          "application/json"
         ],
         "responses": {
           "200": {
@@ -170,9 +145,9 @@
     "/getall": {
       "get": {
         "tags": [
-          "Game"
+          "Product"
         ],
-        "summary": "Get all available Games from all studios",
+        "summary": "All available games",
         "description": "Multiple status values can be provided with comma separated strings",
         "produces": [
           "application/json"
@@ -193,10 +168,10 @@
         }
       }
     },
-    "/gamedetail": {
+    "/productdescription": {
       "post": {
         "tags": [
-          "GameDetail"
+          "Product"
         ],
         "summary": "Specific Game detail",
         "description": "",
@@ -237,12 +212,12 @@
         }
       }
     },
-    "/addtoCart": {
+    "/addProduct": {
       "post": {
         "tags": [
-          "AddToCart"
+          "Product"
         ],
-        "summary": "Add a game to the Cart",
+        "summary": "Add a product",
         "description": "",
         "operationId": "CartFile",
         "consumes": [
@@ -253,22 +228,38 @@
         ],
         "parameters": [
           {
-            "name": "GameName",
+            "name": "ProductName",
             "in": "query",
-            "description": "Game Name",
+            "description": "Product Name",
             "required": true,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "Fifa 18",
-                "Cricket 17",
-                "FarCry New Dawn",
-                "Assassin's Creed Origins",
-                "Assassin's Creed Syndicate",
-                "Assassin's Creed II"
-              ]
-            }
+            "type": "string"
+          },
+          {
+            "name": "CategoryName",
+            "in": "query",
+            "description": "Product Name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "upfile",
+            "in": "formData",
+            "type": "file",
+            "description": "The file to upload."
+          },
+          {
+            "name": "Creator",
+            "in": "query",
+            "description": "Creator",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Price",
+            "in": "query",
+            "description": "Creator",
+            "required": true,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -281,14 +272,14 @@
         }
       }
     },
-    "/order/{gameName}": {
-      "post": {
+    "/modifyproduct": {
+      "put": {
         "tags": [
-          "OrderGame"
+          "Product"
         ],
-        "summary": "Order a Game",
+        "summary": "Modify Product",
         "description": "",
-        "operationId": "Order",
+        "operationId": "ModifyProduct",
         "consumes": [
           "multipart/form-data"
         ],
@@ -297,22 +288,32 @@
         ],
         "parameters": [
           {
-            "name": "gameName",
-            "in": "path",
-            "description": "GameName",
+            "name": "productName",
+            "in": "query",
+            "description": "SKU-Product Name",
             "required": true,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "Fifa 18",
-                "Cricket 17",
-                "FarCry New Dawn",
-                "Assassin's Creed Origins",
-                "Assassin's Creed Syndicate",
-                "Assassin's Creed II"
-              ]
-            }
+            "type": "string"
+          },
+          {
+            "name": "CategoryName",
+            "in": "query",
+            "description": "Product Name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Creator",
+            "in": "query",
+            "description": "Creator",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Price",
+            "in": "query",
+            "description": "Creator",
+            "required": true,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -325,39 +326,47 @@
         }
       }
     },
-    "/orderCart": {
-      "get": {
+    "/deleteProduct": {
+      "delete": {
         "tags": [
-          "Games"
+          "Product"
         ],
-        "summary": "Buy Cart",
-        "description": "Multiple status values can be provided with comma separated strings",
+        "summary": "Delete product",
+        "description": "",
+        "operationId": "DeleteProduct",
+        "consumes": [
+          "multipart/form-data"
+        ],
         "produces": [
           "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "ProductName",
+            "in": "query",
+            "description": "Product Name",
+            "required": true,
+            "type": "string"
+          }
         ],
         "responses": {
           "200": {
             "description": "successful operation",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Game"
-              }
+              "$ref": "#/definitions/ApiResponse"
             }
-          },
-          "400": {
-            "description": "Invalid status value"
           }
         }
       }
     },
-    "/delete": {
-      "delete": {
+    "/brand": {
+      "get": {
         "tags": [
-          "DeleteCartItems"
+          "Brand"
         ],
-        "summary": "Delete Cart Items",
+        "summary": "Get Category",
         "description": "",
+        "operationId": "brandName",
         "consumes": [
           "application/json"
         ],
@@ -366,9 +375,92 @@
         ],
         "parameters": [
           {
-            "name": "productName",
+            "name": "brandName",
+            "in": "query",
+            "description": "brandName",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          }
+        }
+      }
+    },
+    "/addBrand": {
+      "post": {
+        "tags": [
+          "Brand"
+        ],
+        "summary": "Specific Brand detail",
+        "description": "",
+        "operationId": "BrandGames",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "brandName",
+            "in": "query",
+            "description": "ID of Game to update",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "ProductName",
             "in": "query",
             "description": "Product Name",
+            "type": "string"
+          },
+          {
+            "name": "CategoryName",
+            "in": "query",
+            "description": "Product Name",
+            "type": "string"
+          },
+          {
+            "name": "Price",
+            "in": "query",
+            "description": "Creator",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          }
+        }
+      }
+    },
+    "/deleteBrand": {
+      "delete": {
+        "tags": [
+          "Brand"
+        ],
+        "summary": "Delete Brand",
+        "description": "",
+        "operationId": "DeleteBrand",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "brandName",
+            "in": "query",
+            "description": "ID of Brand to delete!",
             "required": true,
             "type": "string"
           }
